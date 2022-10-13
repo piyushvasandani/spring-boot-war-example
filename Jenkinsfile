@@ -41,7 +41,7 @@ pipeline{
         }
         stage("Deploy on Test"){
             steps{
-                deploy adapters: [tomcat9(credentialsId: 'test_serverdetails1', path: '', url: 'http://35.78.75.38:8080')], contextPath: '/app', war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'test_serverdetails1', path: '', url: 'http://13.230.51.131:8080')], contextPath: '/app', war: '**/*.war'
                 echo "========executing Deploy on test========"
             }
             post{
