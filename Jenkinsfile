@@ -1,43 +1,70 @@
-pipeline {
+pipeline{
     agent any
-     tools {
-        maven 'Maven' 
-        }
-    stages {
+
+    stages{
         stage("Test"){
             steps{
-                // mvn test
-                sh "mvn test"
-                slackSend channel: 'youtubejenkins', message: 'Job Started'
-                
+                echo "========executing A========"
             }
-            
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========test executed successfully========"
+                }
+                failure{
+                    echo "========test execution failed========"
+                }
+            }
         }
         stage("Build"){
             steps{
-                sh "mvn package"
-                
+                echo "========executing Build========"
             }
-            
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========Build executed successfully========"
+                }
+                failure{
+                    echo "========Build execution failed========"
+                }
+            }
         }
         stage("Deploy on Test"){
             steps{
-                // deploy on container -> plugin
-                deploy adapters: [tomcat9(credentialsId: 'tomcatserverdetails1', path: '', url: 'http://192.168.0.118:8080')], contextPath: '/app', war: '**/*.war'
-              
+                deploy adapters: [tomcat9(credentialsId: 'test_serverdetails1', path: '', url: 'http://35.78.75.38:8080')], contextPath: '/app', war: '**/*.war'
+                echo "========executing Deploy on test========"
             }
-            
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========Deploy on Test========"
+                }
+                failure{
+                    echo "========Deploy on test execution failed========"
+                }
+            }
         }
-        stage("Deploy on Prod"){
-             input {
-                message "Should we continue?"
-                ok "Yes we Should"
-            }
-            
+        stage("Deploy on prod"){
             steps{
-                // deploy on container -> plugin
-                deploy adapters: [tomcat9(credentialsId: 'tomcatserverdetails1', path: '', url: 'http://192.168.0.119:8080')], contextPath: '/app', war: '**/*.war'
-
+                echo "========executing A========"
+            }
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========A executed successfully========"
+                }
+                failure{
+                    echo "========A execution failed========"
+                }
             }
         }
     }
@@ -47,11 +74,9 @@ pipeline {
         }
         success{
             echo "========pipeline executed successfully ========"
-             slackSend channel: 'youtubejenkins', message: 'Success'
         }
         failure{
             echo "========pipeline execution failed========"
-             slackSend channel: 'youtubejenkins', message: 'Job Failed'
         }
     }
 }
