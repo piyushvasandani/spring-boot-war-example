@@ -44,33 +44,13 @@ pipeline{
                 deploy adapters: [tomcat9(credentialsId: 'test_serverdetails1', path: '', url: 'http://13.230.51.131:8080')], contextPath: '/app', war: '**/*.war'
                 echo "========executing Deploy on test========"
             }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========Deploy on Test========"
-                }
-                failure{
-                    echo "========Deploy on test execution failed========"
-                }
-            }
+           
         }
         stage("Deploy on prod"){
             steps{
-                echo "========executing A========"
+                echo "deployment"
             }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
-                }
-            }
+           
         }
     }
     post{
